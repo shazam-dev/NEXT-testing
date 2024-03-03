@@ -36,18 +36,10 @@ export default function Home() {
         setAge("");
     };
 
-    // fetchAdByIdForUser({ adId })
-
 
     useEffect(() => {
       async function fetchData() {
-        let data = await fetch("https://davse.ru/api/discounts/fetch-ads-by-id", {
-          method: "POST",
-          body: JSON.stringify({adId: '65aa49f4a7838738ed83e1de'}),
-          headers: {
-              "content-type": "application/json",
-          },
-      });
+        let data = await fetch("https://api.kopi34.ru/api/goods/fetch-xsl-file");
         data = await data.json();
         // setProduct(data);
         console.log(222, data);

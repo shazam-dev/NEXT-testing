@@ -37,15 +37,15 @@ export default function Home() {
     };
 
 
-    useEffect(() => {
-      async function fetchData() {
-        let data = await fetch("https://api.kopi34.ru/api/goods/fetch-xsl-file");
-        data = await data.json();
-        // setProduct(data);
-        console.log(222, data);
-      }
-      fetchData();
-    }, []);
+    // useEffect(() => {
+    //   async function fetchData() {
+    //     let data = await fetch("https://api.kopi34.ru/api/goods/fetch-xsl-file");
+    //     data = await data.json();
+    //     // setProduct(data);
+    //     console.log(222, data);
+    //   }
+    //   fetchData();
+    // }, []);
 
     return (
         <div className=" flex flex-col justify-center items-center w-full p-8 ">

@@ -6,7 +6,7 @@ export default function Home() {
     const [age, setAge] = useState("");
     const [product, setProduct] = useState([]);
 
-    fetch("http://localhost:3000/api/test")
+    fetch("http://seo-cy.ru/api/test")
         .then((response) => response.json())
         .then((data) => console.log(1, data))
         .catch((error) => console.error(error));
@@ -16,7 +16,7 @@ export default function Home() {
         const submitData = { name, age };
 
         try {
-            const res = await fetch("http://localhost:3000/api/test", {
+            const res = await fetch("http://seo-cy.ru/api/test", {
                 method: "POST",
                 body: JSON.stringify(submitData),
                 headers: {

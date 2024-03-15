@@ -1,0 +1,31 @@
+Презентация:
+- Страницы
+    - Скидка (одна)
+      - добавить рекламу Яндекс 
+    - Скидки списком
+    - Личный кабинет  попап - просто войти и показать почту в меню!!!
+
+============
+
+Разработка:
+
+- Страницы
+    - Личный кабинет
+      - удалить, редактировать объявление
+
+- Структура БД
+  - Юзер ==> name, email (без подтвержденного не входить), score
+  - объявление => 
+                discount (скидка в %)
+                discountCategory: { type: String },
+                cost: { type: String },
+                name: {  type: String, required: true },
+                description: {  type: String },
+                address: { type: String },
+                latitude: { type: String },
+                longitude: { type: String },
+                image: { type: String, required: true },
+                currentTime: { type: Number },
+                userId: { type: Schema.Types.ObjectId, ref: "User" }
+
+

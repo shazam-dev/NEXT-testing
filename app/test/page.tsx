@@ -1,84 +1,24 @@
-"use client";
-import { useState, useEffect } from "react";
+'use client'
+import React, { useState,  useRef, useEffect } from "react";
 
-export default function Home() {
-    const [name, setName] = useState("");
-    const [age, setAge] = useState("");
-    const [product, setProduct] = useState([]);
-
-    fetch("https://seo-cy.ru/api/test")
-        .then((response) => response.json())
-        .then((data) => console.log(1, data))
-        .catch((error) => console.error(error));
-
-    const handleSubmit = async (e: any) => {
-        e.preventDefault();
-        const submitData = { name, age };
-
-        try {
-            const res = await fetch("https://seo-cy.ru/api/test", {
-                method: "POST",
-                body: JSON.stringify(submitData),
-                headers: {
-                    "content-type": "application/json",
-                },
-            });
-            console.log(2, res);
-            if (res.ok) {
-                console.log("Yeai!");
-            } else {
-                console.log("Oops! Something is wrong.");
-            }
-        } catch (error) {
+export default function Page() {
+    const [position, setPosition] = useState('0');
+  
+    useEffect(() => {
+        const successCallback = (position:any) => {
+            setPosition(`${position.coords.latitude}-_-${position.coords.longitude}`)
+            console.log(position);
+          };
+          
+          const errorCallback = (error:any) => {
             console.log(error);
-        }
-        setName("");
-        setAge("");
-    };
+          };
+          
+          navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
+    }, [])
 
 
-    // useEffect(() => {
-    //   async function fetchData() {
-    //     let data = await fetch("https://api.kopi34.ru/api/goods/fetch-xsl-file");
-    //     data = await data.json();
-    //     // setProduct(data);
-    //     console.log(222, data);
-    //   }
-    //   fetchData();
-    // }, []);
+      return <p>{position}</p>
 
-    return (
-        <div className=" flex flex-col justify-center items-center w-full p-8 ">
- 
-            <form
-                onSubmit={handleSubmit}
-                className=" flex w-full flex-col justify-center items-center "
-            >
-                <div className=" flex w-1/2 justify-center items-center gap-4 ">
-                    <input
-                        type="text"
-                        name="name"
-                        value={name}
-                        placeholder="Enter the name"
-                        onChange={(e) => setName(e.target.value)}
-                        className=" border p-2 px-4 rounded outline-none "
-                    />
-                    <input
-                        type="number"
-                        name="age"
-                        value={age}
-                        placeholder="Enter the age"
-                        onChange={(e) => setAge(e.target.value)}
-                        className=" border p-2 px-4 rounded outline-none "
-                    />
-                    <button
-                        type="submit"
-                        className=" border-blue-500 bg-blue-500 text-white p-2 px-4 rounded-md "
-                    >
-                        Submit
-                    </button>
-                </div>
-            </form>
-        </div>
-    );
+
 }

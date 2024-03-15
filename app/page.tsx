@@ -1,52 +1,128 @@
-import AcmeLogo from '@/app/ui/acme-logo';
-import { ArrowRightIcon } from '@heroicons/react/24/outline';
-import Link from 'next/link';
-import { lusitana } from '@/app/ui/fonts';
-import Image from 'next/image';
+'use client'
+import useSWR from 'swr';
+import { Image} from 'antd';
+import React, { useState,  useRef, useEffect } from "react";
+
+import {Map, YMaps} from "@pbe/react-yandex-maps";
+
+import DiscountsMapComp from './components/DiscountsMapComp';
+import fetchMapByCoo from './server/actions/fetchMap';
+// import { fetchDiscountByMap }from '../../../api/discountAPI';
+
+
+// const fetcher = (url: string) => fetch(url).then((res) => res.json());
+
 
 export default function Page() {
-  return (
-    <main className="flex min-h-screen flex-col p-6">
-      <div className="flex h-20 shrink-0 items-end rounded-lg bg-blue-500 p-4 md:h-52">
-        <AcmeLogo />
-      </div>
-      <div className="mt-4 flex grow flex-col gap-4 md:flex-row">
-        <div className="flex flex-col justify-center gap-6 rounded-lg bg-gray-50 px-6 py-10 md:w-2/5 md:px-20">
-          <div className="h-0 w-0 border-b-[30px] border-l-[20px] border-r-[20px] border-b-black border-l-transparent border-r-transparent" />
-          <p
-            className={`${lusitana.className} text-xl text-gray-800 md:text-3xl md:leading-normal`}
-          >
-            <strong>Welcome to Acme.</strong> This is the example for the{' '}
-            <a href="https://nextjs.org/learn/" className="text-blue-500">
-              Next.js Learn Course
-            </a>
-            , brought to you by Vercel.
-          </p>
-          <Link
-            href="/login"
-            className="flex items-center gap-5 self-start rounded-lg bg-blue-500 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-blue-400 md:text-base"
-          >
-            <span>Log in</span> <ArrowRightIcon className="w-5 md:w-6" />
-          </Link>
-        </div>
-        <div className="flex items-center justify-center p-6 md:w-3/5 md:px-28 md:py-12">
-          {/* Add Hero Images Here */}
+  const [geo, setGeo] = useState(true);
+  
+  
+  useEffect(() => {
+    
+      let promise = new Promise(function(resolve) {
+        setTimeout(function() {
+          setGeo(false);
+        }, 3000);
+      });
+  }, [])
+  // promise.then((data) => { console.log(data)})
+
+  // const { data: discounts, error, isLoading } = useSWR<any>(`/api/map`, fetcher);
+
+  const mapRef = useRef<any>();
+    
+  const [discounts, setDiscounts] = useState<any>(null);
+  const [coordinates, setCoordinates] = useState<any>([]);
+  const [map, setMap] = useState<any>(null);
+  const [zoom, setZoom] = useState<any>(11);
+
+  const refreshData = () => {
+     if(mapRef.current && mapRef.current._bounds) {
+       setMap(mapRef.current._bounds);
+      }
+    };
+
+  useEffect(() => {
+
+    if(!map) return;
+    // if( zoom < 12) {
+    //     setTimeout(function() {setZoom(13) }, 1000); 
+    //     return;}
+
+    async function fetchMyAPI() {
+
+      const formData = new FormData();
+          formData.append("xLatitude", map[0][0]);
+          formData.append("xLongitude", map[0][1]);
+          formData.append("yLatitude", map[1][0]);
+          formData.append("yLongitude", map[1][1]);
+          // createGoodsItem(formData)
+          let response = await fetchMapByCoo(formData)
+          // response = await response.json()
+          setDiscounts(response)
+          
+          let mid2:any = []
+          response.map((item:any) => {mid2 = [...mid2, [item.latitude, item.longitude]]})
+          setCoordinates(mid2)
+    }
+
+    fetchMyAPI()
+    
+
+      // fetchDiscountByMap({xLatitude: map[0][0], xLongitude: map[0][1], yLatitude: map[1][0], yLongitude: map[1][1] })
+
+  }, [map])
+
+  if(geo){ return(
+      <div className='min-h-screen' style={{position: 'relative'}}>
+        <div className='w-full text-center mt-10'>
           <Image
-            src="/hero-desktop.png"
-            width={1000}
-            height={760}
-            className="hidden md:block"
-            alt="Screenshots of the dashboard project showing desktop version"
-          />  
-          <Image
-            src="/hero-mobile.png"
-            width={560}
-            height={620}
-            className="block md:hidden"
-            alt="Screenshot of the dashboard project showing mobile version"
+            width={100}
+            src="/files/icons8-worldwide-location.gif"
+            alt="логотип давсе"
           />
+          <p>GeoLocation...</p>
         </div>
       </div>
-    </main>
+  )}
+  return (<>
+  
+                <div  style={{position: 'relative'}}>
+                    <YMaps
+                        query={{ apikey: process.env.REACT_APP_YANDEX_KEY }}>
+                        <section className="map " >
+                                <Map
+                                    defaultState={{
+                                        // center: [48.707067, 44.516975],
+                                        center: [48.512273, 44.555203],
+                                        zoom: 14
+                                    }}
+                                    width="100%"
+                                    height={700}
+                                    modules={['geoObject.addon.balloon', 'geoObject.addon.hint', "geolocation", "geocode"]}
+                                    onBoundsChange={(ymaps:any) => {
+                                        setMap(ymaps.originalEvent.newBounds);
+                                        setZoom(ymaps.originalEvent.newZoom);
+                                    }}
+                                    instanceRef={mapRef}
+                                    onLoad={refreshData}
+                                        >
+                                        { discounts &&
+                                            discounts.map((item: any, index:any) => {
+                                                return(
+                                                    <span key={index}>
+                                                        <DiscountsMapComp  mainDataObject={{item, coordinates, index}} />
+                                                    </span>
+                                                );
+                                            })
+                                        }
+                                </Map>
+                        </section>
+                    </YMaps>
+                <br></br>
+               <p>* Обозначение цветов маркеров: <span style={{color:'white', backgroundColor: 'red'}}>Красный:</span> частные объявления (до 3; <span style={{color:'white', backgroundColor: 'yellow'}}>Желтый:</span> срок объявления от 7 до 30 дней; <span style={{color:'white', backgroundColor: 'blue'}}>Синий:</span> срок объявления более 30 дней!</p>
+                </div>
+    
+    </>
   );
 }

@@ -11,7 +11,7 @@ import {fspiralFromSameCoordinatesToYaMap} from '@/lib/utils/helpFunctions'
 // }
 
 
-const DiscountsMapComp = (props: any) => {
+const DiscountsMapComp = ({mainDataObject}: any) => {
 
     // функция должно окрашивать метки в цвета в зависимости от длительности размещения, если старше 7 дней, то желтый или красный
     // let colorPoint;
@@ -23,23 +23,23 @@ const DiscountsMapComp = (props: any) => {
     return (
         <>
                 <Placemark
-                        geometry={[props.mainDataObject.item.latitude, props.mainDataObject.item.longitude]}
+                        geometry={[mainDataObject.item.latitude, mainDataObject.item.longitude]}
                         options={{
                             preset: 'islands#oliveStretchyIcon', // список темплейтов на сайте яндекса
                             // iconColor: colorPoint, // цвет иконкиz
-                            iconColor: 'red', // цвет иконкиz
-                            iconOffset: fspiralFromSameCoordinatesToYaMap(props.mainDataObject.coordinates, props.mainDataObject.index, props.mainDataObject.item), // !!!!!!!!!!!!!!
+                            iconColor: 'red', // цвет иконки
+                            iconOffset: fspiralFromSameCoordinatesToYaMap(mainDataObject.coordinates, mainDataObject.index, mainDataObject.item), // !!!!!!!!!!!!!!
                         }}
                         properties={{
-                            iconContent: `${props.mainDataObject.item.discount}%`, // пару символов помещается
+                            iconContent: `${mainDataObject.item.discount}%`, // пару символов помещается
                             hintContent: '<em>кликни меня</em>',
                             balloonContent: `<div class="my-balloon">
-                                <h4>${props.mainDataObject.item.name}</h4>
+                                <h4>${mainDataObject.item.name}</h4>
                                 <p>
-                                    Цена: ${props.mainDataObject.item.cost}; <br />
-                                    Cкидка ${props.mainDataObject.item.discount}%
+                                    Цена: ${mainDataObject.item.cost}; <br />
+                                    Cкидка ${mainDataObject.item.discount}%
                                 </p>
-                                <a href="/ad-view/${props.mainDataObject.item.id}">Посмотреть</a>
+                                <a href="/ad-view/${mainDataObject.item.id}">Посмотреть</a>
                                 </div>`,
                         }}
                     />

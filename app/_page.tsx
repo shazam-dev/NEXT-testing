@@ -87,7 +87,7 @@ export default function Page() {
   )}
   return (<>
   
-<>
+                <div  style={{position: 'relative'}}>
                     <YMaps
                         query={{ apikey: process.env.REACT_APP_YANDEX_KEY }}>
                         <section className="map " >
@@ -98,7 +98,7 @@ export default function Page() {
                                         zoom: 14
                                     }}
                                     width="100%"
-                                    height={600}
+                                    height={700}
                                     modules={['geoObject.addon.balloon', 'geoObject.addon.hint', "geolocation", "geocode"]}
                                     onBoundsChange={(ymaps:any) => {
                                         setMap(ymaps.originalEvent.newBounds);
@@ -119,9 +119,9 @@ export default function Page() {
                                 </Map>
                         </section>
                     </YMaps>
-                {/* <br></br>
-               <p>* Обозначение цветов маркеров: <span style={{color:'white', backgroundColor: 'red'}}>Красный:</span> частные объявления (до 3; <span style={{color:'white', backgroundColor: 'yellow'}}>Желтый:</span> срок объявления от 7 до 30 дней; <span style={{color:'white', backgroundColor: 'blue'}}>Синий:</span> срок объявления более 30 дней!</p> */}
-            </>
+                <br></br>
+               <p>* Обозначение цветов маркеров: <span style={{color:'white', backgroundColor: 'red'}}>Красный:</span> частные объявления (до 3; <span style={{color:'white', backgroundColor: 'yellow'}}>Желтый:</span> срок объявления от 7 до 30 дней; <span style={{color:'white', backgroundColor: 'blue'}}>Синий:</span> срок объявления более 30 дней!</p>
+                </div>
     
     </>
   );

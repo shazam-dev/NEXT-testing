@@ -1,6 +1,5 @@
 import React,  { useState } from 'react';
-import Col from "react-bootstrap/Col";
-import Button from '@mui/material/Button';
+
 import Resizer from "react-image-file-resizer";
 
 

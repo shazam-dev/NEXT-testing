@@ -1,13 +1,10 @@
 import React from "react";
 
 import { YMaps, Map, Placemark } from "@pbe/react-yandex-maps";
-import Col from "react-bootstrap/Col";
-import { TextField } from "@mui/material";
-import { fetchYandexAddress } from "../../../../api/discountAPI";
-import Button from "@mui/material/Button";
+
 // import { useDispatch } from "react-redux";
-import './MapChoiceComp.scss';
-import {useDispatch} from "react-redux";
+// import './MapChoiceComp.scss';
+// import {useDispatch} from "react-redux";
 
 const MapChoiceComp = (props: any) => {
     const dispatch = useDispatch();

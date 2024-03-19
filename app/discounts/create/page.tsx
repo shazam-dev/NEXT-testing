@@ -8,16 +8,35 @@ import Discounts from "@/app/discounts/create/components/Discounts";
 
 
 import globalParamsObject from "@/lib/parameters/mainAppParameterObject";
-import { Button, Flex, Form, Input, InputNumber   } from 'antd';
+import { Button, Flex, Form, Input, type FormProps   } from 'antd';
 
+type FieldType = {
+    username?: string;
+    password?: string;
+    remember?: string;
+  };
 
 const CreateDiscount = () => {
 
     const [step, setStep] = useState<number>(0);
     const [loading, setLoading] = useState<boolean>(false);
-    const [flag, setFlag] = useState<number>(1);
     const [createObject, setCreateObject] = useState<any>({});
     
+
+
+
+
+
+
+
+      const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
+        console.log('Success:', values);
+      };
+      
+      const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (errorInfo) => {
+        console.log('Failed:', errorInfo);
+      };
+
 
 
     
@@ -28,39 +47,11 @@ const CreateDiscount = () => {
     function nextStep() {
         if (!globalParamsObject.main.checkAdCategory[0][step].every((i: any) => Boolean(createObject[i]))
         ) {
-            setFlag(0);
             return;
         }
         setStep(step + 1);
-        setFlag(1);
     }
 
-    const stepsComponents: any = [
-        <ImageResizingComp
-            key={1}
-            flag={flag}
-            changeCreateObject={changeCreateObject}
-            createObject={createObject}
-        />,
-        <MapChoiceComp
-            key={2}
-            flag={flag}
-            changeCreateObject={changeCreateObject}
-            createObject={createObject}
-        />,
-        <CommonFieldsComp
-            key={3}
-            flag={flag}
-            changeCreateObject={changeCreateObject}
-            createObject={createObject}
-        />,
-        <Discounts
-            key={4}
-            flag={flag}
-            changeCreateObject={changeCreateObject}
-            createObject={createObject}
-        />,
-    ];
 
     const sendToServer = () => {
       alert(890)
@@ -117,15 +108,7 @@ const CreateDiscount = () => {
     };
 
 
-    const comutator = () =>{
-        if(step === 3){
-            if(!loading){
-                sendToServer()
-            }
-        }else{
-            nextStep()
-        }
-    }
+
 
     return (
         <Flex gap="middle" align="start" vertical>
@@ -136,29 +119,27 @@ const CreateDiscount = () => {
                     labelCol={{ span: 8 }}
                     wrapperCol={{ span: 16 }}
                     // style={{ maxWidth: 600 }}
-                    className=""
+                    className="w-full"
                     initialValues={{ remember: true }}
-                    // onFinish={onFinish}
-                    // onFinishFailed={onFinishFailed}
+                    onFinish={onFinish}
+                    onFinishFailed={onFinishFailed}
                     autoComplete="off"
                 >
-                {/* {stepsComponents[step]} */}
-                <Form.Item
-                    hasFeedback
-                    label="Field C"
-                    name="field_c"
-                    validateFirst
-                    rules={[{ pattern: /^[0-9]*$/, message: 'Continue input to exceed 6 chars' }]}
-                >
-                    <Input placeholder="Validate one by one" />
-                    {/* <InputNumber min={1} max={10} defaultValue={3} onChange={(value)=>{console.log(value)}} /> */}
-                </Form.Item>
+
+
+                    <ImageResizingComp />
+
+                    <MapChoiceComp />
+
+                    <CommonFieldsComp />
+
+                    <Discounts />
 
 
 
                     <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-                        <Button type={ step === 3 ? 'primary' : 'dashed' } loading={loading}
-                            onClick={comutator}  htmlType="submit">
+                        <Button type='primary' loading={loading}
+                             htmlType="submit">
                             {step === 3 ? 'Опубликовать' : 'Следующий шаг'}
                             
                         </Button>

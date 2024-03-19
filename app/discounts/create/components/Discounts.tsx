@@ -1,100 +1,52 @@
 import React from "react";
 
-
+import {
+    Form,
+    Input,
+    Select,
+  } from 'antd';
 import globalParamsObject from "@/lib/parameters/mainAppParameterObject";
 
-const Discounts = (props: any) => {
-    // ==========================================================================================================
+const Discounts = () => {
     return (
         <>
-            <Col xs={12} md={{ span: 6, offset: 3 }}>
-                <TextField
-                    label="7) Введите цену со скидкой*:"
-                    variant="outlined"
-                    fullWidth
-                    sx={{
-                        mb: 1,
-                    }}
-                    error={Boolean(
-                        !props.createObject.cost && props.flag === 0
-                    )}
-                    onChange={(e: any) =>
-                        props.changeCreateObject({ cost: e.target.value })
-                    }
-                />
-                </Col>
-            <Col xs={12} md={{ span: 6, offset: 3 }}>
-                <FormControl
-                    fullWidth
-                    sx={{ mb: 1}}
-                >
-                    <InputLabel
-                        error={Boolean(
-                            !props.createObject.discount && props.flag === 0
-                        )}
+
+                    <Form.Item
+                    // hidden
+                        hasFeedback
+                        label="Цена:"
+                        name="cost"
+                        validateFirst
+                        rules={[{ required: true, pattern: /^[0-9]*$/, message: 'Введите сумму без копеек!' }]}
                     >
-                        8) Выберите размер скидки*:
-                    </InputLabel>
-                    <Select
-                        // value={props.createObject.discount}
-                        defaultValue={""}
-                        // value={props.createObject.discount ? props.createObject.discount : '5'}
-                        error={Boolean(
-                            !props.createObject.discount && props.flag === 0
-                        )}
-                        onChange={(e: any) =>
-                            props.changeCreateObject({
-                                discount: e.target.value,
-                            })
-                        }
-                    >
-                        {globalParamsObject.discounts.discountSize.map(
-                            (item: any, index: any) => {
-                                return (
-                                    <MenuItem key={index + 1} value={index + 1}>
-                                        {item}%
-                                    </MenuItem>
-                                );
-                            }
-                        )}
-                    </Select>
-                </FormControl>
-            </Col>
-            <Col xs={12} md={{ span: 6, offset: 3 }}  className="mb-2">
-                <FormControl fullWidth>
-                    <InputLabel
-                        id="demo-simple-select-label"
-                        error={Boolean(
-                            !props.createObject.discountCategory &&
-                                props.flag === 0
-                        )}
-                    >
-                        9) Выберите категорию скидки*:
-                    </InputLabel>
-                    <Select
-                        defaultValue={""}
-                        error={Boolean(
-                            !props.createObject.discountCategory &&
-                                props.flag === 0
-                        )}
-                        onChange={(e: any) =>
-                            props.changeCreateObject({
-                                discountCategory: e.target.value,
-                            })
-                        }
-                    >
+                        <Input placeholder="Цена со скидкой!" />
+                    </Form.Item>
+                    <Form.Item label="Скидка (%)" name="sale" rules={[{ required: true, message: 'Обязательное поле!' }]}>
+                        <Select>
+                            <Select.Option value="5">5</Select.Option>
+                            <Select.Option value="10">10</Select.Option>
+                            <Select.Option value="15">15</Select.Option>
+                            <Select.Option value="20">20</Select.Option>
+                            <Select.Option value="35">25</Select.Option>
+                            <Select.Option value="30">30</Select.Option>
+                            <Select.Option value="35">35</Select.Option>
+                            <Select.Option value="40">40</Select.Option>
+                            <Select.Option value="45">45</Select.Option>
+                            <Select.Option value="50">50</Select.Option>
+                        </Select>
+                    </Form.Item>
+                    <Form.Item label="Категория:" name="cat" rules={[{ required: true, message: 'Обязательное поле!' }]}>
+                        <Select>
                         {globalParamsObject.discounts.discountsCategory.map(
-                            (item: any, index: any) => {
+                            (item: string, index: number) => {
                                 return (
-                                    <MenuItem key={index + 1} value={index + 1}>
-                                        {item}
-                                    </MenuItem>
+                                    <Select.Option key={index + 1} value={index + 1}>{item}</Select.Option>
                                 );
                             }
                         )}
-                    </Select>
-                </FormControl>
-            </Col>
+                        </Select>
+                    </Form.Item>
+
         </>
     );
 };

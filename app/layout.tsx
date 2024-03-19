@@ -38,8 +38,7 @@ export default function RootLayout({
       <AntdRegistry>
       <Layout>
       <Sider
-        defaultCollapsed
-        className='h-screen'
+        // defaultCollapsed
         breakpoint="lg"
         collapsedWidth="0"
         onBreakpoint={(broken) => {
@@ -60,7 +59,7 @@ export default function RootLayout({
       </Sider>
       <Layout>
         {/* <Header style={{ padding: 0, background: colorBgContainer }} >Давсе</Header> */}
-        <Content style={{ margin: '24px 16px 0' }} >
+        <Content style={{ margin: '24px 16px 0' }}>
           <div
             style={{
               padding: 5,
@@ -68,6 +67,7 @@ export default function RootLayout({
               background: colorBgContainer,
               borderRadius: borderRadiusLG,
             }}
+            className='!min-h-screen'
           >
             {children}
           </div>
@@ -77,7 +77,7 @@ export default function RootLayout({
         </Footer>
       </Layout>
     </Layout>
-    <FloatButton icon={<PlusOutlined />}  tooltip={<p>Создать</p>} type="primary" href="/create" style={{ right: 24 }} />
+    <FloatButton icon={<PlusOutlined />}  tooltip={<p>Создать</p>} type="primary" href="/discounts/create" style={{ right: 24 }} />
     </AntdRegistry>
         </body>
     </html>

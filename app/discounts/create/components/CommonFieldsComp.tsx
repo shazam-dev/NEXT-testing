@@ -1,46 +1,32 @@
 import React from "react";
 
-
+import {
+    Form,
+    Input,
+  } from 'antd';
 import globalParamsObject from "@/lib/parameters/mainAppParameterObject";
 
-const CommonFieldsComp = (props: any) => {
-    // ==========================================================================================================
+const CommonFieldsComp = () => {
 
     return (
         <>
-
-                <TextField
-                    id="outlined-basic"
-                    label="Введите заголовок объявления*:"
-                    variant="outlined"
-                    fullWidth
-                    sx={{ mb: 1 }}
-                    error={Boolean(
-                        !props.createObject.name && props.flag === 0
-                    )}
-                    onChange={(e: any) =>
-                        props.changeCreateObject({ name: e.target.value })
-                    }
-                />
-
-
-                <TextField
-                    label="Введите описание объявления (до 1000 символов)*:"
-                    fullWidth
-                    multiline
-                    rows={4}
-                    sx={{ mb: 1 }}
-                    error={Boolean(
-                        !Boolean(props.createObject.description) &&
-                            props.flag === 0
-                    )}
-                    onChange={(e: any) =>
-                        props.changeCreateObject({
-                            description: e.target.value,
-                        })
-                    }
-                />
-
+            <Form.Item
+            // hidden
+                hasFeedback
+                label="Заголовок:"
+                name="title"
+                validateFirst
+                rules={[{ required: true, message: 'Обязательное поле!' }]}
+            >
+                <Input placeholder="Название объявления!" />
+            </Form.Item>
+            <Form.Item
+                label="Описение:"
+                name="description"
+                rules={[{ required: true, message: 'Обязательное поле!' }]}
+            >
+                <Input.TextArea />
+            </Form.Item>
         </>
     );
 };

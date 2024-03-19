@@ -1,131 +1,76 @@
-import React, { FC, useEffect, useState } from "react";
-
-import Col from "react-bootstrap/Col";
-import Row from "react-bootstrap/Row";
-
-import Spinner from "react-bootstrap/Spinner";
-import ListGroup from "react-bootstrap/ListGroup";
-
-
-import { fetchAdById } from "../../../api/discountAPI";
-
+"use client"
+import React, { useEffect, useState, Suspense } from "react";
+import { Col, Row } from 'antd';
+// import { fetchAdById } from "../../../api/discountAPI";
+import useSWR from 'swr'
 import globalParamsObject from "@/lib/parameters/mainAppParameterObject";
+// import CustomImag from "@/app/discounts/[id]/customImag";
+// const fetcher = (...args) => fetch(...args).then(res => res.json())
+
+const fetcher = async (
+    input: RequestInfo,
+    init: RequestInit,
+    ...args: any[]
+  ) => {
+    const res = await fetch(input, init);
+    return res.json();
+  };
 
 
-const AdView: FC = () => {
 
-    const { adId } = useParams<{adId?: string}>();
+export default function Page({ params }: { params: { id: string } }) {
+        const id = params.id;
 
-    const [adsItem, setAdsItem] = useState<any>(null);
+        const { data } = useSWR('/api/discounts/1', fetcher, { suspense: true })
 
-    useEffect(() => {
-        fetchAdById({ adId })
-            .then((data: any) => {
-                setAdsItem(data);
-            })
-            .catch((error) => {
-                if(error.response && error.response.data) {
-                    dispatch({type: "ALERT", payload: {modal: true, variant: 'warning', text: `${error.response.data.message}`}});
-                } 
-            });
-    }, []);
+    // useEffect(() => {
+    //     fetchAdById({ adId })
+    //         .then((data: any) => {
+    //             setdata(data);
+    //         })
+    //         .catch((error) => {
+    //             if(error.response && error.response.data) {
+    //                 dispatch({type: "ALERT", payload: {modal: true, variant: 'warning', text: `${error.response.data.message}`}});
+    //             } 
+    //         });
+    // }, []);
 
     return (
-        <>
-            <Row className="mb-3">
-                <Col xs={12} md={6} className="wrap-image">
-                    {adsItem ? (
-                        <div className="card-user_cab">
-                            <div className="back_wrap_new" 
-                            // style={{backgroundImage: `url(${adsItem.image})`}}
-                            >
-                                <img  alt="Место для картинки" src={adsItem.image} className='card_img-user_cab' />
-                            </div>
-                        </div>
-                    ) : (
-                        <Spinner animation="border" />
-                    )}
+            <Row gutter={[24, 24]} className="!m-5"> 
+                <Col span={24} lg={12}>
+                <div className="card-user_cab">
+                    <div className="back_wrap_new" 
+                    // style={{backgroundImage: `url(${data.image})`}}
+                    >
+                        <img  alt="скидка Волгограда" src={data.img} className='card_img-user_cab' />
+                    </div>
+                </div>
                 </Col>
-                <Col xs={12} lg={6}>
-                    {adsItem ? 
-                        <>
-                            <h1 className={`nav_${globalParamsObject.main.adsCategoryNames[+adsItem.adCategory - 1]}_link`}>
-                                {adsItem && globalParamsObject.main.adsCategory[+adsItem.adCategory - 1]}
-                            </h1>
-                            <ListGroup variant="flush">
-                                <ListGroup.Item>
-                                    Название: {adsItem.name}
-                                </ListGroup.Item>
-                                <ListGroup.Item>
-                                    Описание: {adsItem.description}
-                                </ListGroup.Item>
-                                <ListGroup.Item>
-                                    Район: {globalParamsObject.main.districtsNames[adsItem.district - 1]}
-                                </ListGroup.Item>
-                                <ListGroup.Item>
-                                    Адрес: {adsItem.address}
-                                </ListGroup.Item>
-                                
-                                <ListGroup.Item>
-                                    Название: {adsItem.name}
-                                </ListGroup.Item>
-    {/* 1 */}
-                                { adsItem.cost  && 
-                                <ListGroup.Item>
-                                    Цена (руб.): {adsItem.cost}
-                                </ListGroup.Item> }
-    {/* СКИДКИ */}
-                                { adsItem.discount  && 
-                                <ListGroup.Item>
-                                    Скидка (%): {globalParamsObject.discounts.discountSize[adsItem.discount - 1]}
-                                </ListGroup.Item> }
-                                { adsItem.discountCategory  && 
-                                <ListGroup.Item>
-                                    Категория скидки: {globalParamsObject.discounts.discountsCategory[adsItem.discountCategory - 1]}
-                                </ListGroup.Item> }
-    {/* Мероприятия */}
-                                { adsItem.startDate  && 
-                                    <ListGroup.Item>
-                                        Дата начала: {new Date(+adsItem.startDate).toISOString().split('T')[0]}
-                                    </ListGroup.Item> }
-                                { adsItem.endDate  && 
-                                <ListGroup.Item>
-                                    Дата конца: {new Date(+adsItem.endDate).toISOString().split('T')[0]}
-                                </ListGroup.Item> }
-{/* АВИТО */}
-{ adsItem.avitoCategory  && 
-                                <ListGroup.Item>
-                                    Категория объявления: {globalParamsObject.avito.avitoCategory[adsItem.avitoCategory - 1]}
-                                </ListGroup.Item> }
-                            { adsItem.avitoSubCategory  && 
-                                <ListGroup.Item>
-                                    Подкатегория объявления: {globalParamsObject.avito.avitoSubCategory[adsItem.avitoCategory - 1][adsItem.avitoSubCategory - 1]}
-                                </ListGroup.Item> }
-                            { adsItem.uniquePart && Object.values(JSON.parse(adsItem.uniquePart)).map((item:any, index:any) => {
-                                return(
-                                    <ListGroup.Item key={index}>
-                                        {`${item[0]} ${item[1]}`}
-                                    </ListGroup.Item> 
-                                    );
-                                })
-                            }
+                <Col span={12}>
+                        <ul>
+                            <li>
+                                Название: {data.name}
+                            </li>
+                            <li>
+                                Скидка (%): {data.discount}
+                            </li> 
+                            <li>
+                                Категория скидки: {globalParamsObject.discounts.discountsCategory[data.discountCategory - 1]}
+                            </li> 
+                            <li>
+                                Цена (руб.): {data.cost}
+                            </li>
+                            
+                            <li>
+                                Описание: {data.description}
+                            </li>
+                            <li>
+                                Адрес: {data.address}
+                            </li>
 
-                                <ListGroup.Item>
-                                    <b>Имя продавца (компании): </b>{adsItem.userId.name}
-                                </ListGroup.Item>
-                                <ListGroup.Item>
-                                    <b>Телефон: </b>{adsItem.userId.phone}
-                                </ListGroup.Item>
-
-                            </ListGroup>
-                        </>
-                     : 
-                        <Spinner animation="border" />
-                    }
+                        </ul>
                 </Col>
             </Row>
-        </>
     );
 };
 
-export default AdView;

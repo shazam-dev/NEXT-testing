@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-
+import prisma from '@/lib/prisma'
 export async function GET(){
 
 
@@ -12,7 +12,7 @@ export async function GET(){
     return NextResponse.json({data})
 }
 
-export async function POST(req,res){
+export async function POST(req:any,res:any){
     const data  = await req.json()
     console.log(data)
 

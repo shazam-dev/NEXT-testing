@@ -44,7 +44,7 @@ const MapChoiceComp = () => {
                 // hidden
                     hasFeedback
                     label="Адрес:"
-                    name="adress"
+                    name="address"
                     validateDebounce={2000}
                     rules={[{ required: true, min: 3, message: 'Введите адрес целиком!' }]} initialValue="Волгоград, "
                 // onClick={callFetchYandexAddress} 

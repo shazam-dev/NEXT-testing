@@ -7,13 +7,13 @@ export default function Loading() {
   <div className='h-screen'>
     <Flex  gap="small" vertical>
 
-    <Spin tip="Геолокация...">
+    <Spin tip="Загрузка...">
       {/* <Alert
         message="Alert message title"
         description="Further details about the context of this alert."
         type="info"
       /> */}
-      <div className="content mt-10 text-center pt-10" >Ищем ваше местоположение!</div>
+      <div className="content mt-10 text-center pt-10" ></div>
     </Spin>
     </Flex>
 

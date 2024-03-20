@@ -1,5 +1,6 @@
 Сделать: 
   - на карте загрузку точек после задержки 1 сек для экономия запросов
+  - обработка ошибок boundary
 
 
 
@@ -23,23 +24,5 @@
               - скидки - одно очко рейтинга 
               - выбор 2 и 7 дней, но для 7 дней нужно подтвердить юр лицо!- иначе заблокируем!
 
-
-============
-
-Разработка:
-- Структура БД
-  - Юзер ==> name, email (без подтвержденного не входить), score
-  - объявление => 
-                discount (скидка в %)
-                discountCategory: { type: String },
-                cost: { type: String },
-                name: {  type: String, required: true },
-                description: {  type: String },
-                address: { type: String },
-                latitude: { type: String },
-                longitude: { type: String },
-                image: { type: String, required: true },
-                currentTime: { type: Number },
-                userId: { type: Schema.Types.ObjectId, ref: "User" }
 
 

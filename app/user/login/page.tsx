@@ -1,131 +1,104 @@
-import React, { FC, useEffect, useState } from "react";
+'use client'
+import { FC, useEffect, useState, useRef } from "react";
+import Script from "next/script";
+import { Button, Flex, Tabs  } from 'antd';
+// import { Helmet } from "react-helmet";
+// import $ from "jquery";
+// import Tab from "react-bootstrap/Tab";
+// import Tabs from "react-bootstrap/Tabs";
 
-import Col from "react-bootstrap/Col";
-import Row from "react-bootstrap/Row";
+// import { logReg } from "../../api/userAPI";
 
-import Spinner from "react-bootstrap/Spinner";
-import ListGroup from "react-bootstrap/ListGroup";
+import LoginPage from "./components/LoginPage";
+// import RegPage from "./components/RegPage";
+// import { useDispatch } from "react-redux";
 
+// import "./LoginRegStyle.scss";
 
-import { fetchAdById } from "../../../api/discountAPI";
+declare global {
+    interface Window {
+        qwerty: any,
+        preview: any,
+    }
+}
 
-import globalParamsObject from "@/lib/parameters/mainAppParameterObject";
+const LoginReg: FC = () => {
+    // const dispatch = useDispatch();
+    
 
+    const [flag, setFlag] = useState<boolean>(false);
 
-const AdView: FC = () => {
-
-    const { adId } = useParams<{adId?: string}>();
-
-    const [adsItem, setAdsItem] = useState<any>(null);
+    const elementRef = useRef<any>(null);
 
     useEffect(() => {
-        fetchAdById({ adId })
-            .then((data: any) => {
-                setAdsItem(data);
-            })
-            .catch((error) => {
-                if(error.response && error.response.data) {
-                    dispatch({type: "ALERT", payload: {modal: true, variant: 'warning', text: `${error.response.data.message}`}});
-                } 
+        console.log(window !== undefined); 
+        window.qwerty = (data: any): void => {
+            console.log("Иконки соц.сетей не видны при 0", data);
+        };
+        if (!elementRef || !elementRef.current) return;
+        const observer = new ResizeObserver((entries) => {
+            // 👉 Do something when the element is resized
+            entries.forEach((entry) => {
+                if (entry.contentRect.height === 0) {
+                    setFlag(true);
+                } else {
+                    setFlag(false);
+                }
+                console.log(101, "ResizeObserver", entry.contentRect.height);
             });
+        });
+
+        observer.observe(elementRef.current);
+        return () => {
+            // Cleanup the observer by unobserving all elements
+            observer.disconnect();
+        };
     }, []);
 
     return (
         <>
-            <Row className="mb-3">
-                <Col xs={12} md={6} className="wrap-image">
-                    {adsItem ? (
-                        <div className="card-user_cab">
-                            <div className="back_wrap_new" 
-                            // style={{backgroundImage: `url(${adsItem.image})`}}
-                            >
-                                <img  alt="Место для картинки" src={adsItem.image} className='card_img-user_cab' />
-                            </div>
-                        </div>
-                    ) : (
-                        <Spinner animation="border" />
+
+                <Flex gap="middle" align="start" vertical>
+                <Flex justify="center" align="center" className="">
+                    <Tabs
+                        // onChange={onChange}
+                        type="card"
+                        items={[{label: 'Вход', key: '1', children: <LoginPage></LoginPage>}]} />
+                    <div
+                        ref={elementRef}
+                        className="social-icons"
+                        id="uLogin30465678"
+                        data-ulogin="display=panel;fields=first_name,email;optional=phone,last_name,photo,bdate;lang=ru;providers=vkontakte,yandex,google,mailru,youtube;redirect_uri=http%3A%2F%2Fwww.davse.ru%2Flogin-registration;callback=preview"
+                    ></div>
+                    {flag && (
+                        <p className="note-reg">
+                            Для входа или регистрации через социальные сети -
+                            отключите блокировщик рекламы в браузере (привер:
+                            Adblock Plus)!
+                        </p>
                     )}
-                </Col>
-                <Col xs={12} lg={6}>
-                    {adsItem ? 
-                        <>
-                            <h1 className={`nav_${globalParamsObject.main.adsCategoryNames[+adsItem.adCategory - 1]}_link`}>
-                                {adsItem && globalParamsObject.main.adsCategory[+adsItem.adCategory - 1]}
-                            </h1>
-                            <ListGroup variant="flush">
-                                <ListGroup.Item>
-                                    Название: {adsItem.name}
-                                </ListGroup.Item>
-                                <ListGroup.Item>
-                                    Описание: {adsItem.description}
-                                </ListGroup.Item>
-                                <ListGroup.Item>
-                                    Район: {globalParamsObject.main.districtsNames[adsItem.district - 1]}
-                                </ListGroup.Item>
-                                <ListGroup.Item>
-                                    Адрес: {adsItem.address}
-                                </ListGroup.Item>
-                                
-                                <ListGroup.Item>
-                                    Название: {adsItem.name}
-                                </ListGroup.Item>
-    {/* 1 */}
-                                { adsItem.cost  && 
-                                <ListGroup.Item>
-                                    Цена (руб.): {adsItem.cost}
-                                </ListGroup.Item> }
-    {/* СКИДКИ */}
-                                { adsItem.discount  && 
-                                <ListGroup.Item>
-                                    Скидка (%): {globalParamsObject.discounts.discountSize[adsItem.discount - 1]}
-                                </ListGroup.Item> }
-                                { adsItem.discountCategory  && 
-                                <ListGroup.Item>
-                                    Категория скидки: {globalParamsObject.discounts.discountsCategory[adsItem.discountCategory - 1]}
-                                </ListGroup.Item> }
-    {/* Мероприятия */}
-                                { adsItem.startDate  && 
-                                    <ListGroup.Item>
-                                        Дата начала: {new Date(+adsItem.startDate).toISOString().split('T')[0]}
-                                    </ListGroup.Item> }
-                                { adsItem.endDate  && 
-                                <ListGroup.Item>
-                                    Дата конца: {new Date(+adsItem.endDate).toISOString().split('T')[0]}
-                                </ListGroup.Item> }
-{/* АВИТО */}
-{ adsItem.avitoCategory  && 
-                                <ListGroup.Item>
-                                    Категория объявления: {globalParamsObject.avito.avitoCategory[adsItem.avitoCategory - 1]}
-                                </ListGroup.Item> }
-                            { adsItem.avitoSubCategory  && 
-                                <ListGroup.Item>
-                                    Подкатегория объявления: {globalParamsObject.avito.avitoSubCategory[adsItem.avitoCategory - 1][adsItem.avitoSubCategory - 1]}
-                                </ListGroup.Item> }
-                            { adsItem.uniquePart && Object.values(JSON.parse(adsItem.uniquePart)).map((item:any, index:any) => {
-                                return(
-                                    <ListGroup.Item key={index}>
-                                        {`${item[0]} ${item[1]}`}
-                                    </ListGroup.Item> 
-                                    );
-                                })
-                            }
+                </Flex>
+                </Flex>
 
-                                <ListGroup.Item>
-                                    <b>Имя продавца (компании): </b>{adsItem.userId.name}
-                                </ListGroup.Item>
-                                <ListGroup.Item>
-                                    <b>Телефон: </b>{adsItem.userId.phone}
-                                </ListGroup.Item>
+            <Script src="https://code.jquery.com/jquery-3.7.1.min.js"
+                    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+                    crossOrigin="anonymous"></Script>
+            <Script  src="//ulogin.ru/js/ulogin.js"></Script>
 
-                            </ListGroup>
-                        </>
-                     : 
-                        <Spinner animation="border" />
-                    }
-                </Col>
-            </Row>
+            <Script
+                type="text/javascript"
+                id="my-script">
+                {`
+                function preview(token){
+                    $.getJSON("//ulogin.ru/token.php?host=" + encodeURIComponent(location.toString()) + "&token=" + token + "&callback=?", function(data){
+                        qwerty(data)
+                    });
+                }
+                `}
+            </Script>
+
         </>
     );
 };
 
-export default AdView;
+export default LoginReg;

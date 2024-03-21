@@ -15,7 +15,7 @@ const CommonFieldsComp = () => {
                 hasFeedback
                 label="Заголовок:"
                 name="title"
-                validateFirst
+                validateDebounce={1000}
                 rules={[{ required: true, message: 'Обязательное поле!' }]}
             >
                 <Input placeholder="Название объявления!" />

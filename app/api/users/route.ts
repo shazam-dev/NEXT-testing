@@ -17,7 +17,7 @@ export async function POST(req:any,res:any){
     const data  = await req.json()
 
     const user = await prisma.users.create({
-        data: { email: 'alice@prisma.io' },
+        data
       })
     console.log(12121212, data)
     return NextResponse.json(user)

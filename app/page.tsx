@@ -1,33 +1,12 @@
 'use client'
 import useSWR from 'swr';
-import { Image} from 'antd';
 import React, { useState,  useRef, useEffect } from "react";
-
 import {Map, YMaps} from "@pbe/react-yandex-maps";
-
 import DiscountsMapComp from './components/DiscountsMapComp';
-import fetchMapByCoo from './server/actions/fetchMap';
-// import { fetchDiscountByMap }from '../../../api/discountAPI';
-
-
-// const fetcher = (url: string) => fetch(url).then((res) => res.json());
+// import fetchMapByCoo from './server/actions/fetchMap';
 
 
 export default function Page() {
-  const [geo, setGeo] = useState(true);
-  
-  
-  useEffect(() => {
-    
-      let promise = new Promise(function(resolve) {
-        setTimeout(function() {
-          setGeo(false);
-        }, 3000);
-      });
-  }, [])
-  // promise.then((data) => { console.log(data)})
-
-  // const { data: discounts, error, isLoading } = useSWR<any>(`/api/map`, fetcher);
 
   const mapRef = useRef<any>();
     
@@ -42,49 +21,32 @@ export default function Page() {
       }
     };
 
-  useEffect(() => {
+  // useEffect(() => {
 
-    if(!map) return;
-    // if( zoom < 12) {
-    //     setTimeout(function() {setZoom(13) }, 1000); 
-    //     return;}
+  //   if(!map) return;
+  //   // if( zoom < 12) {
+  //   //     setTimeout(function() {setZoom(13) }, 1000); 
+  //   //     return;}
 
-    async function fetchMyAPI() {
+  //   async function fetchMyAPI() {
 
-      const formData = new FormData();
-          formData.append("xLatitude", map[0][0]);
-          formData.append("xLongitude", map[0][1]);
-          formData.append("yLatitude", map[1][0]);
-          formData.append("yLongitude", map[1][1]);
-          // createGoodsItem(formData)
-          let response = await fetchMapByCoo(formData)
-          // response = await response.json()
-          setDiscounts(response)
+  //     const formData = new FormData();
+  //         formData.append("xLatitude", map[0][0]);
+  //         formData.append("xLongitude", map[0][1]);
+  //         formData.append("yLatitude", map[1][0]);
+  //         formData.append("yLongitude", map[1][1]);
+  //         let response = await fetchMapByCoo(formData)
+  //         setDiscounts(response)
           
-          let mid2:any = []
-          response.map((item:any) => {mid2 = [...mid2, [item.latitude, item.longitude]]})
-          setCoordinates(mid2)
-    }
+  //         let mid2:any = []
+  //         response.map((item:any) => {mid2 = [...mid2, [item.latitude, item.longitude]]})
+  //         setCoordinates(mid2)
+  //   }
 
-    fetchMyAPI()
-    
+  //   fetchMyAPI()
+  
+  // }, [map])
 
-      // fetchDiscountByMap({xLatitude: map[0][0], xLongitude: map[0][1], yLatitude: map[1][0], yLongitude: map[1][1] })
-
-  }, [map])
-
-  if(geo){ return(
-      <div className='min-h-screen' style={{position: 'relative'}}>
-        <div className='w-full text-center mt-10'>
-          <Image
-            width={100}
-            src="/files/icons8-worldwide-location.gif"
-            alt="логотип давсе"
-          />
-          <p>GeoLocation...</p>
-        </div>
-      </div>
-  )}
   return (<>
   
 <>

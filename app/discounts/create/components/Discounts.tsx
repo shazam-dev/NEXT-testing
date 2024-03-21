@@ -16,12 +16,15 @@ const Discounts = () => {
                         hasFeedback
                         label="Цена:"
                         name="cost"
-                        validateFirst
+                        validateDebounce={1000}
                         rules={[{ required: true, pattern: /^[0-9]*$/, message: 'Введите сумму без копеек!' }]}
                     >
                         <Input placeholder="Цена со скидкой!" />
                     </Form.Item>
-                    <Form.Item label="Скидка (%)" name="sale" rules={[{ required: true, message: 'Обязательное поле!' }]}>
+                    <Form.Item label="Скидка (%)" name="sale" 
+                        hasFeedback
+                        validateDebounce={1000}
+                        rules={[{ required: true, message: 'Обязательное поле!' }]}>
                         <Select>
                             <Select.Option value="5">5</Select.Option>
                             <Select.Option value="10">10</Select.Option>
@@ -35,7 +38,10 @@ const Discounts = () => {
                             <Select.Option value="50">50</Select.Option>
                         </Select>
                     </Form.Item>
-                    <Form.Item label="Категория:" name="cat" rules={[{ required: true, message: 'Обязательное поле!' }]}>
+                    <Form.Item label="Категория:" name="cat"
+                        hasFeedback
+                        validateDebounce={1000}
+                        rules={[{ required: true, message: 'Обязательное поле!' }]}>
                         <Select>
                         {globalParamsObject.discounts.discountsCategory.map(
                             (item: string, index: number) => {

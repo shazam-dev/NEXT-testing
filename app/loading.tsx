@@ -1,22 +1,24 @@
 'use client'
 import React from 'react';
-import { Flex, Spin , Alert} from 'antd';
+import { Flex, Spin , Image} from 'antd';
 
 export default function Loading() {
   return (
-  <div className='h-screen'>
-    <Flex  gap="small" vertical>
 
-    <Spin tip="Загрузка...">
-      {/* <Alert
-        message="Alert message title"
-        description="Further details about the context of this alert."
-        type="info"
-      /> */}
-      <div className="content mt-10 text-center pt-10" ></div>
-    </Spin>
+    <Flex gap="middle" align="center"  justify="center" vertical className="h-96">
+        <Flex className="" vertical={true}>
+          <Image
+              preview={false}
+                className=''
+                // width={120}
+                src="/files/icons8-sale.gif"
+                alt="логотип давсе"
+              />
+              
+          <p className="text-center"></p>
+        </Flex>
     </Flex>
 
-  </div>
+
 );
   }

@@ -79,7 +79,7 @@ export default function RootLayout({
         </Footer>
       </Layout>
     </Layout>
-    <FloatButton icon={<PlusOutlined />}  tooltip={<p>Создать</p>} type="primary" href="/discounts/create" style={{ right: 24 }} />
+    <FloatButton icon={<PlusOutlined />}  tooltip={<p>Создать</p>} type="primary" href="/discounts/create"  style={{ right: 30, width: "60px", height: "60px" }} />
     </AntdRegistry>
         </body>
     </html>

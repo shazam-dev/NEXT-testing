@@ -1,10 +1,9 @@
+"use client"
 import React from "react";
 
 import { YMaps, Map, Placemark } from "@pbe/react-yandex-maps";
 
-// import { useDispatch } from "react-redux";
-// import './MapChoiceComp.scss';
-// import {useDispatch} from "react-redux";
+
 
 import {
     Form,
@@ -14,28 +13,7 @@ import {
 
 
 const MapChoiceComp = () => {
-    // const dispatch = useDispatch();
-    // const [addressString, setAddressString] = useState<string>("Волгоград, ");
-    // const [coordinats, setCoordinats] = useState<any>([]);
 
-    // let callFetchYandexAddress = (): void => {
-    //     if (!props.createObject.address) return;
-    //     fetchYandexAddress({ address: props.createObject.address })
-    //         .then((data: any) => {
-    //             if(!data.result){
-    //                 dispatch({type: "ALERT", payload: {modal: true, variant: 'warning', text: `Адрес не найден!`}});
-    //                 return;
-    //             }
-    //                 props.changeCreateObject({address: data.result, latitude: data.latitude, longitude: data.longitude});
-    //         })
-    //         .catch((error: any) => {
-    //             if (error.response && error.response.data) {
-    //                 dispatch({type: "ALERT", payload: {modal: true, variant: 'warning', text: `${error.response.data.message}`}});
-    //             } 
-    //         });
-    // };
-
-    // ==========================================================================================================
 
     return (
         <>

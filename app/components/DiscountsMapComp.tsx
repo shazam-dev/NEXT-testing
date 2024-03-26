@@ -11,7 +11,7 @@ import {fspiralFromSameCoordinatesToYaMap} from '@/lib/utils/helpFunctions'
 // }
 
 
-const DiscountsMapComp = ({mainDataObject}: any) => {
+const DiscountsMapComp = ({ mainDataObject = {}}: any) => {
 
     // функция должно окрашивать метки в цвета в зависимости от длительности размещения, если старше 7 дней, то желтый или красный
     // let colorPoint;
@@ -39,7 +39,7 @@ const DiscountsMapComp = ({mainDataObject}: any) => {
                                     Цена: ${mainDataObject.item.cost}; <br />
                                     Cкидка ${mainDataObject.item.discount}%
                                 </p>
-                                <a href="/ad-view/${mainDataObject.item.id}">Посмотреть</a>
+                                <a href="/discounts/${mainDataObject.item.id}">Посмотреть</a>
                                 </div>`,
                         }}
                     />

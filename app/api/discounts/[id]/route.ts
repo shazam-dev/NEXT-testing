@@ -1,25 +1,43 @@
-// import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
-// import prisma from '@/lib/prisma'
-// export async function GET(request : NextRequest,{ params }: { params: { id: number } }) {
-//     const id =  params.id
-//     if (!id) {
-//         return NextResponse.error("Missing 'id' parameter");
-//       }
+import prisma from '@/lib/prisma'
+export async function GET(request : NextRequest,{ params }: { params: { id: number } }) {
+    const id =  params.id
+    console.log(id)
+    // if (!id) {
+    //     return NextResponse.error("Missing 'id' parameter");
+    //   }
       
-//       const post = await prisma.post.findUnique({
-//         where: {
-//           id: parseInt(id),
-//         },
-//         include: {
-//           author: {
-//             select: { name: true },
-//           },
-//         },
-//       });
+    //   const post = await prisma.post.findUnique({
+    //     where: {
+    //       id: parseInt(id),
+    //     },
+    //     include: {
+    //       author: {
+    //         select: { name: true },
+    //       },
+    //     },
+    //   });
+
+    const post = [
+            
+        {
+            "id": id,
+            "sale": "5",
+            "cost": "570",
+            "title": "Сертификат на посещение спортивного комплекса",
+            "latitude": "48.5022276",
+            "longitude": "44.5502945",
+            "currentTime": 1705311301055,
+            "image": "/files/93Kb.jpg",
+            "description": "Описание скидки",
+            "address": "Волгоградская 8",
+
+        },
+    ]
       
-//       return NextResponse.json(post);
-// }
+      return NextResponse.json(post);
+}
 // export async function PUT(request : NextRequest,{ params }: { params: { id: number } }) {
 //     const id =  params.id
 //     if (!id) {

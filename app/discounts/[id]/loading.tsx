@@ -1,12 +1,20 @@
 'use client'
 import React from 'react';
-import { Flex, Spin , Alert} from 'antd';
+import { Col, Row, Skeleton} from 'antd';
 
 export default function Loading() {
   return (
-  <div className='h-screen'>Загрузка ...
 
 
-  </div>
+
+
+<Row gutter={[24, 24]} className="!m-5"> 
+    <Col span={24} lg={12}>
+      <Skeleton  />
+    </Col>
+    <Col span={12}>
+      <Skeleton />
+    </Col>
+</Row>
 );
   }

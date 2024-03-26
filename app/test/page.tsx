@@ -1,7 +1,9 @@
 'use client'
-import React, { useState,  useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
+
 
 export default function Page() {
+
     const [position, setPosition] = useState('0');
   
     useEffect(() => {

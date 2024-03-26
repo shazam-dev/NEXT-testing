@@ -1,16 +1,34 @@
+"use client"
 import React from "react";
 
 import {
     Form,
     Input,
     Select,
+    Slider
   } from 'antd';
 import globalParamsObject from "@/lib/parameters/mainAppParameterObject";
 
 const Discounts = () => {
     return (
         <>
-
+                    <Form.Item
+                    // hidden
+                        hasFeedback
+                        label="Заголовок:"
+                        name="title"
+                        validateDebounce={1000}
+                        rules={[{ required: true, message: 'Обязательное поле!' }]}
+                    >
+                        <Input placeholder="название скидки" />
+                    </Form.Item>
+                    <Form.Item
+                        label="Описение:"
+                        name="description"
+                        rules={[{ required: true, message: 'Обязательное поле!' }]}
+                    >
+                        <Input.TextArea placeholder="условия, график ..." />
+                    </Form.Item>
                     <Form.Item
                     // hidden
                         hasFeedback
@@ -19,13 +37,14 @@ const Discounts = () => {
                         validateDebounce={1000}
                         rules={[{ required: true, pattern: /^[0-9]*$/, message: 'Введите сумму без копеек!' }]}
                     >
-                        <Input placeholder="Цена со скидкой!" />
+                        <Input placeholder="руб. (цена со скидкой)" />
                     </Form.Item>
-                    <Form.Item label="Скидка (%)" name="sale" 
+                    <Form.Item name="sale" 
+                    label="Скидка"
                         hasFeedback
                         validateDebounce={1000}
                         rules={[{ required: true, message: 'Обязательное поле!' }]}>
-                        <Select>
+                        <Select  placeholder="%" >
                             <Select.Option value="5">5</Select.Option>
                             <Select.Option value="10">10</Select.Option>
                             <Select.Option value="15">15</Select.Option>
@@ -38,7 +57,7 @@ const Discounts = () => {
                             <Select.Option value="50">50</Select.Option>
                         </Select>
                     </Form.Item>
-                    <Form.Item label="Категория:" name="cat"
+                    {/* <Form.Item label="Категория:" name="cat"
                         hasFeedback
                         validateDebounce={1000}
                         rules={[{ required: true, message: 'Обязательное поле!' }]}>
@@ -51,6 +70,17 @@ const Discounts = () => {
                             }
                         )}
                         </Select>
+
+                    </Form.Item> */}
+
+                    <Form.Item name="slider" label="Срок размещения (дней)"  initialValue={1}>
+                        <Slider max={60} min={1} 
+                            marks={{
+                            7: 'неделя',
+                            30: 'месяц',
+                            60: '60',
+                            }}
+                        />
                     </Form.Item>
 
         </>

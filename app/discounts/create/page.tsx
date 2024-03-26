@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 
 import ImageResizingComp from "@/app/discounts/create/components/ImageResizingComp";
-import CommonFieldsComp from "@/app/discounts/create/components/CommonFieldsComp";
 import MapChoiceComp from "@/app/discounts/create/components/MapChoiceComp";
 import Discounts from "@/app/discounts/create/components/Discounts";
 
@@ -18,14 +17,13 @@ type FieldType = {
 
 const CreateDiscount = () => {
 
-    const [step, setStep] = useState<number>(0);
     const [loading, setLoading] = useState<boolean>(false);
     const [createObject, setCreateObject] = useState<any>({});
     
 
 
 
-
+console.log(createObject)
 
 
 
@@ -36,6 +34,9 @@ const CreateDiscount = () => {
       const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (errorInfo) => {
         console.log('Failed:', errorInfo);
       };
+      const onValuesChange: FormProps<FieldType>["onValuesChange"] = (values) => {
+        console.log(12334546, values);
+      };
 
 
 
@@ -44,13 +45,7 @@ const CreateDiscount = () => {
         setCreateObject({ ...createObject, ...agent1 });
     }
 
-    function nextStep() {
-        if (!globalParamsObject.main.checkAdCategory[0][step].every((i: any) => Boolean(createObject[i]))
-        ) {
-            return;
-        }
-        setStep(step + 1);
-    }
+
 
 
     const sendToServer = () => {
@@ -115,33 +110,31 @@ const CreateDiscount = () => {
             <Flex className="w-full" justify="center" align="flex-start">
 
                 <Form
+
                     name="basic"
                     labelCol={{ span: 8 }}
                     wrapperCol={{ span: 16 }}
                     // style={{ maxWidth: 600 }}
-                    className="w-full"
+                    className="md:w-1/3"
                     initialValues={{ remember: true }}
                     onFinish={onFinish}
                     onFinishFailed={onFinishFailed}
+                    onValuesChange={onValuesChange}
                     autoComplete="off"
                 >
 
 
-                    <ImageResizingComp />
+                    <ImageResizingComp changeCreateObject={changeCreateObject}/>
 
                     <MapChoiceComp />
-
-                    <CommonFieldsComp />
 
                     <Discounts />
 
 
 
-                    <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-                        <Button type='primary' loading={loading}
-                             htmlType="submit">
-                            {step === 3 ? 'Опубликовать' : 'Следующий шаг'}
-                            
+                    <Form.Item >
+                        <Button type='primary' loading={loading} className=" w-full"
+                             htmlType="submit">Опубликовать
                         </Button>
                     </Form.Item>
                 </Form>

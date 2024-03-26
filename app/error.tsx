@@ -18,7 +18,7 @@ export default function Error({
   // TODO  кого использовать глобал или не глобал ошибки
   return (
     <div>
-      <h2>Something went wrong!</h2>
+      <h2>Произошла внутренняя ошибка!</h2>
       <button
         onClick={
           // Attempt to recover by trying to re-render the segment

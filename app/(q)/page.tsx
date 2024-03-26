@@ -1,19 +1,31 @@
 'use client'
-import useSWR from 'swr';
 import React, { useState,  useRef, useEffect } from "react";
 import {Map, YMaps} from "@pbe/react-yandex-maps";
-import DiscountsMapComp from './components/DiscountsMapComp';
-// import fetchMapByCoo from './server/actions/fetchMap';
+import DiscountsMapComp from '@/app/components/DiscountsMapComp';
+import {getMapItems} from "@/lib/actions";
 
+import useSWR from 'swr'
+const fetcher = async (
+  input: RequestInfo,
+  init: RequestInit,
+  ...args: any[]
+) => {
+  const res = await fetch(input, init);
+  return res.json();
+};
 
 export default function Page() {
 
+  
   const mapRef = useRef<any>();
-    
+  
   const [discounts, setDiscounts] = useState<any>(null);
   const [coordinates, setCoordinates] = useState<any>([]);
   const [map, setMap] = useState<any>(null);
   const [zoom, setZoom] = useState<any>(11);
+  
+  const { data } = useSWR(`/api/discounts/${zoom}`, fetcher, { suspense: true })
+    
 
   const refreshData = () => {
      if(mapRef.current && mapRef.current._bounds) {
@@ -21,37 +33,41 @@ export default function Page() {
       }
     };
 
-  // useEffect(() => {
 
-  //   if(!map) return;
-  //   // if( zoom < 12) {
-  //   //     setTimeout(function() {setZoom(13) }, 1000); 
-  //   //     return;}
 
-  //   async function fetchMyAPI() {
+  useEffect(() => {
 
-  //     const formData = new FormData();
-  //         formData.append("xLatitude", map[0][0]);
-  //         formData.append("xLongitude", map[0][1]);
-  //         formData.append("yLatitude", map[1][0]);
-  //         formData.append("yLongitude", map[1][1]);
-  //         let response = await fetchMapByCoo(formData)
-  //         setDiscounts(response)
+    if(!map) return;
+    // if( zoom < 12) {
+    //     setTimeout(function() {setZoom(13) }, 1000); 
+    //     return;}
+
+    async function fetchMyAPI() {
+
+      const formData = new FormData();
+          formData.append("xLatitude", map[0][0]);
+          formData.append("xLongitude", map[0][1]);
+          formData.append("yLatitude", map[1][0]);
+          formData.append("yLongitude", map[1][1]);
+          let response = await getMapItems(formData);
+          setDiscounts(response)
           
-  //         let mid2:any = []
-  //         response.map((item:any) => {mid2 = [...mid2, [item.latitude, item.longitude]]})
-  //         setCoordinates(mid2)
-  //   }
+          let mid2:any = []
+          response.map((item:any) => {mid2 = [...mid2, [item.latitude, item.longitude]]})
+          setCoordinates(mid2)
+    }
 
-  //   fetchMyAPI()
+    fetchMyAPI()
   
-  // }, [map])
+  }, [map])
+
+
 
   return (<>
   
-<>
+
                     <YMaps
-                        query={{ apikey: process.env.REACT_APP_YANDEX_KEY }}>
+                        query={{ apikey: process.env.NEXT_PUBLIC_REACT_APP_YANDEX_KEY}}>
                         <section className="map " >
                                 <Map
                                     defaultState={{
@@ -81,10 +97,7 @@ export default function Page() {
                                 </Map>
                         </section>
                     </YMaps>
-                {/* <br></br>
-               <p>* Обозначение цветов маркеров: <span style={{color:'white', backgroundColor: 'red'}}>Красный:</span> частные объявления (до 3; <span style={{color:'white', backgroundColor: 'yellow'}}>Желтый:</span> срок объявления от 7 до 30 дней; <span style={{color:'white', backgroundColor: 'blue'}}>Синий:</span> срок объявления более 30 дней!</p> */}
-            </>
-    
+
     </>
   );
 }

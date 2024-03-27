@@ -12,7 +12,7 @@ import {
   } from 'antd';
 
 
-const MapChoiceComp = () => {
+const MapChoiceComp = ({ changeCreateObject, createObject }: any) => {
 
 
     return (

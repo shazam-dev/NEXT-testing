@@ -6,40 +6,23 @@ import MapChoiceComp from "@/app/discounts/create/components/MapChoiceComp";
 import Discounts from "@/app/discounts/create/components/Discounts";
 
 
-import globalParamsObject from "@/lib/parameters/mainAppParameterObject";
-import { Button, Flex, Form, Input, type FormProps   } from 'antd';
+import Ajv, {JSONSchemaType} from "ajv"
+const ajv = new Ajv()
 
-type FieldType = {
-    username?: string;
-    password?: string;
-    remember?: string;
-  };
+interface MyData {
+    discount: string,
+    cost: number,
+}
+
+
+
+
+import { Button, Col, Row  , Flex  } from 'antd';
 
 const CreateDiscount = () => {
 
     const [loading, setLoading] = useState<boolean>(false);
     const [createObject, setCreateObject] = useState<any>({});
-    
-
-
-
-console.log(createObject)
-
-
-
-      const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
-        console.log('Success:', values);
-      };
-      
-      const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (errorInfo) => {
-        console.log('Failed:', errorInfo);
-      };
-      const onValuesChange: FormProps<FieldType>["onValuesChange"] = (values) => {
-        console.log(12334546, values);
-      };
-
-
-
     
     function changeCreateObject(agent1: any) {
         setCreateObject({ ...createObject, ...agent1 });
@@ -47,27 +30,27 @@ console.log(createObject)
 
 
 
+    const schema: JSONSchemaType<MyData> = {
+      type: "object",
+      properties: {
+        discount: {type: "string", minLength: 1},
+        cost: {type: "integer", minimum: 1},
+        // bar: {type: "string", nullable: true}
+      },
+      required: ["discount", "cost"],
+      additionalProperties: false
+    }
+    
+    const validate = ajv.compile(schema)
 
+    
+    
     const sendToServer = () => {
-      alert(890)
-        // if (
-        //     adCategory &&
-        //     !globalParamsObject.main.checkAdCategory[+adCategory - 1][
-        //         step
-        //     ].every((i: any) => Boolean(createObject[i]))
-        // ) {
-        //     setFlag(0);
-        //     return;
-        // }
-
-        // const formData = new FormData();
-        // Object.entries({
-        //     ...createObject,
-        //     userId: stateUser.id,
-        //     adCategory,
-        // }).map((item: any) => {
-        //     return formData.append(item[0], item[1]);
-        // });
+      
+      if (!validate(createObject)) {
+        console.log(createObject)
+        console.log(validate.errors)
+      }
 
         // setLoading(true);
 
@@ -106,40 +89,35 @@ console.log(createObject)
 
 
     return (
-        <Flex gap="middle" align="start" vertical>
-            <Flex className="w-full" justify="center" align="flex-start">
+      <Row gutter={[12, 12]}  justify="center">
+      <Col  span={20} lg={12} >
+      <Flex vertical gap={24}>
+         <ImageResizingComp changeCreateObject={changeCreateObject}
+            createObject={createObject}/>
 
-                <Form
+                    <MapChoiceComp changeCreateObject={changeCreateObject}
+            createObject={createObject} />
 
-                    name="basic"
-                    labelCol={{ span: 8 }}
-                    wrapperCol={{ span: 16 }}
-                    // style={{ maxWidth: 600 }}
-                    className="md:w-1/3"
-                    initialValues={{ remember: true }}
-                    onFinish={onFinish}
-                    onFinishFailed={onFinishFailed}
-                    onValuesChange={onValuesChange}
-                    autoComplete="off"
-                >
-
-
-                    <ImageResizingComp changeCreateObject={changeCreateObject}/>
-
-                    <MapChoiceComp />
-
-                    <Discounts />
+                    <Discounts  changeCreateObject={changeCreateObject}
+            createObject={createObject}/>
 
 
 
-                    <Form.Item >
-                        <Button type='primary' loading={loading} className=" w-full"
-                             htmlType="submit">Опубликовать
-                        </Button>
-                    </Form.Item>
-                </Form>
-            </Flex>
-        </Flex>
+                    <Button type="primary" loading={false} className="mb-5"
+                    // disabled
+                    onClick={sendToServer}
+                    >
+          Опубликовать!
+        </Button></Flex>
+      </Col>
+
+
+        </Row>
+
+
+
+                  
+
                             
     );
 };

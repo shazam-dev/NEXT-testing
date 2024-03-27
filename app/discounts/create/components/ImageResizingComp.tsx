@@ -9,7 +9,7 @@ import ImgCrop from 'antd-img-crop';
 type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
 
   
-const ImageResizingComp = ({ changeCreateObject }: any) => {
+const ImageResizingComp = ({ changeCreateObject, createObject }: any) => {
     const [fileList, setFileList] = useState<UploadFile[]>([]);
 
     const onChange: UploadProps['onChange'] = ({ fileList: newFileList }) => {

@@ -1,20 +1,21 @@
+"use client"
 import React,  { useState } from 'react';
 
-import { Form, Upload } from 'antd';
+import { Upload } from 'antd';
 
 import type { GetProp, UploadFile, UploadProps,  } from 'antd';
 import ImgCrop from 'antd-img-crop';
-
   
-type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
+// type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
 
   
 const ImageResizingComp = ({ changeCreateObject, createObject }: any) => {
-    const [fileList, setFileList] = useState<UploadFile[]>([]);
+    // const [fileList, setFileList] = useState<UploadFile[]>([]);
 
+    
     const onChange: UploadProps['onChange'] = ({ fileList: newFileList }) => {
-        setFileList(newFileList);
-        changeCreateObject(newFileList);
+        // setFileList(newFileList);
+        changeCreateObject({image: newFileList});
     };
     
       // const onPreview = async (file: UploadFile) => {
@@ -32,25 +33,21 @@ const ImageResizingComp = ({ changeCreateObject, createObject }: any) => {
       //   imgWindow?.document.write(image.outerHTML);
       // };
 
-    
-
 
     return (
         <>
-                    <Form.Item label="Upload" required  valuePropName="fileList">
-                        <ImgCrop rotationSlider>
-                            <Upload
-                                // action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
-                                listType="picture-card"
-                                fileList={fileList}
-                                onChange={onChange}
-                                // onPreview={onPreview}
-                            >
-                                {fileList.length < 1 && '+ Upload'}
-                            </Upload>
-                        </ImgCrop>
-                    </Form.Item>
-
+          <ImgCrop rotationSlider>
+              <Upload
+                  // action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
+                  customRequest={(value:any) => {value.onSuccess();}}
+                  listType="picture-card"
+                  // fileList={fileList}
+                  onChange={onChange}
+                  // onPreview={onPreview}
+              >
+                  { !Boolean(createObject.image) && '+ Upload'}
+              </Upload>
+          </ImgCrop>
         </>
     );
 };

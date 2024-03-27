@@ -4,85 +4,60 @@ import React, { useState } from "react";
 import ImageResizingComp from "@/app/discounts/create/components/ImageResizingComp";
 import MapChoiceComp from "@/app/discounts/create/components/MapChoiceComp";
 import Discounts from "@/app/discounts/create/components/Discounts";
+    // import * as v from 'valibot';
+import axios from "axios";
 
-
-import Ajv, {JSONSchemaType} from "ajv"
-const ajv = new Ajv()
-
-interface MyData {
-    discount: string,
-    cost: number,
-}
-
-
-
+import {
+  useMutation,
+} from '@tanstack/react-query'
 
 import { Button, Col, Row  , Flex  } from 'antd';
 
 const CreateDiscount = () => {
+  const [loading, setLoading] = useState<boolean>(false);
+  const [createObject, setCreateObject] = useState<any>({sale: "5", range: 1, cat: 1, description: "", image: null});
+  // const [address, setaAddress] = useState<boolean>(false);
+  // const [loading, setLoading] = useState<boolean>(false);
+  // address, latitude, longitude 
+  
+  // console.log(createObject.image && createObject.image[0].originFileObj)
+  console.log(createObject)
 
-    const [loading, setLoading] = useState<boolean>(false);
-    const [createObject, setCreateObject] = useState<any>({});
+  function changeCreateObject(agent1: any) {
+    setCreateObject({ ...createObject, ...agent1 });
+  }
+
+  const mutation = useMutation({
+    mutationFn: (newTodo: any) => {
+      return axios.post('/api/auth/discounts/coordinates', newTodo)
+    },
+  })
+
+
+    // const Schema = v.object({
+    //   title: v.string('Это обязательное поле!', [v.minLength(1, 'Минимальная длинна 3 символа!') ]),
+    //   cost: v.number('Введите целое число без копеек, запятых и точек!', [v.integer('Введите целое число без копеек, запятых и точек!'),]),
+    //   address: v.string('Это обязательное поле!', [v.minLength(1, 'Минимальная длинна 3 символа!') ]),
+    // });
+      // console.log( v.safeParse(Schema, createObject))
     
-    function changeCreateObject(agent1: any) {
-        setCreateObject({ ...createObject, ...agent1 });
-    }
-
-
-
-    const schema: JSONSchemaType<MyData> = {
-      type: "object",
-      properties: {
-        discount: {type: "string", minLength: 1},
-        cost: {type: "integer", minimum: 1},
-        // bar: {type: "string", nullable: true}
-      },
-      required: ["discount", "cost"],
-      additionalProperties: false
-    }
     
-    const validate = ajv.compile(schema)
 
-    
-    
     const sendToServer = () => {
-      
-      if (!validate(createObject)) {
-        console.log(createObject)
-        console.log(validate.errors)
-      }
-
-        // setLoading(true);
-
-        // createDiscount(formData)
-        //     .then((data) => {
-        //         dispatch({
-        //             type: "ALERT",
-        //             payload: {
-        //                 modal: true,
-        //                 variant: "success",
-        //                 text: `Успешно!`,
-        //             },
-        //         });
-        //         setTimeout(function () {
-        //             // window.location.replace("/user/user-ads-list");
-        //             navigate(`/user/user-ads-list`); // <-- redirec
-        //         }, 800);
-        //     })
-        //     .catch((error: any) => {
-        //         console.log(error)
-        //         // if (error.response && error.response.data) {
-        //         //     dispatch({
-        //         //         type: "ALERT",
-        //         //         payload: {
-        //         //             modal: true,
-        //         //             variant: "warning",
-        //         //             text: `${error.response.data.message}`,
-        //         //         },
-        //         //     });
-        //         // }
-        //     })
-        //     .finally(() => setLoading(false));
+      if(!Boolean(createObject.image)){
+        alert("Картинка не загружена!");
+        return;}
+      if(!Boolean(createObject.title) || !Boolean(createObject.cost)){
+        alert("Вы не ввели название и цену!");
+        return;}
+        if(!Boolean(createObject.address)){
+          alert("Вы не ввели адрес!");
+          return;}
+      if(!Boolean(createObject.latitude) || !Boolean(createObject.longitude)){
+        alert("Введите адрес заново, он не найден!");
+        return;}
+          
+        mutation.mutate(createObject)
     };
 
 
@@ -96,7 +71,7 @@ const CreateDiscount = () => {
             createObject={createObject}/>
 
                     <MapChoiceComp changeCreateObject={changeCreateObject}
-            createObject={createObject} />
+            createObject={createObject}/>
 
                     <Discounts  changeCreateObject={changeCreateObject}
             createObject={createObject}/>

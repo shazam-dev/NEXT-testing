@@ -16,7 +16,7 @@ export default function GlobalError({
       <Result
             status="403"
             title="403"
-            subTitle="Sorry, you are not authorized to access this page."
+            subTitle="ГЛОБАЛЬНАЯ ОШИБКА"
             extra={<Button type="primary" onClick={() => reset()}>Back Home</Button>}
         />
 

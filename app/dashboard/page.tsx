@@ -1,11 +1,11 @@
 // 'use client'
 import React, { useState,  useRef, useEffect } from "react";
-import { signOut } from '@/auth';
+import { signOut, auth } from '@/auth';
 import {logOut} from '@/lib/actions'
 
-export default function Page() {
+export default async function Page() {
 
-
+console.log(await auth())
       return (
       <>
         <form action={logOut}

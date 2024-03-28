@@ -32,7 +32,7 @@ const Discounts = ({ changeCreateObject, createObject }: any) => {
                     {/* Цена */}
                         <Input addonAfter="руб." placeholder="цена со скидкой без копеек!" showCount maxLength={8} status="" addonBefore="Цена:"  onChange={(e: any) =>
                                 changeCreateObject({
-                                    cost: +e.target.value,
+                                    cost: e.target.value,
                                 })
                             } />
 
@@ -65,7 +65,7 @@ const Discounts = ({ changeCreateObject, createObject }: any) => {
                             {globalParamsObject.discounts.discountsCategory.map(
                                 (item: string, index: number) => {
                                     return (
-                                        <Select.Option key={index + 1} value={index + 1}>{item}</Select.Option>
+                                        <Select.Option key={index + 1} value={String(index + 1)}>{item}</Select.Option>
                                     );
                                 }
                             )}

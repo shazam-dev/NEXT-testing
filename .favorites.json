@@ -19,11 +19,29 @@
     },
     {
         "type": "File",
-        "name": "c:\\Users\\jackl\\OneDrive\\Рабочий стол\\Saler\\app\\user\\login\\components\\LoginPage.tsx",
+        "name": "c:\\Users\\jackl\\OneDrive\\Рабочий стол\\Saler\\.env.local",
         "parent_id": null,
-        "fsPath": "c:\\Users\\jackl\\OneDrive\\Рабочий стол\\Saler\\app\\user\\login\\components\\LoginPage.tsx",
+        "fsPath": "c:\\Users\\jackl\\OneDrive\\Рабочий стол\\Saler\\.env.local",
         "workspaceRoot": null,
         "workspacePath": null,
-        "id": "Hpf6FzLkVighlNed"
+        "id": "pAE9MbLGZxN1y5uX"
+    },
+    {
+        "type": "File",
+        "name": "c:\\Users\\jackl\\OneDrive\\Рабочий стол\\Saler\\prisma\\schema.prisma",
+        "parent_id": null,
+        "fsPath": "c:\\Users\\jackl\\OneDrive\\Рабочий стол\\Saler\\prisma\\schema.prisma",
+        "workspaceRoot": null,
+        "workspacePath": null,
+        "id": "86fbJqtgL1lDUrXC"
+    },
+    {
+        "type": "File",
+        "name": "c:\\Users\\jackl\\OneDrive\\Рабочий стол\\Saler\\package.json",
+        "parent_id": null,
+        "fsPath": "c:\\Users\\jackl\\OneDrive\\Рабочий стол\\Saler\\package.json",
+        "workspaceRoot": null,
+        "workspacePath": null,
+        "id": "XuApjKcNvTLoQwS4"
     }
 ]

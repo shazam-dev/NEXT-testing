@@ -19,6 +19,7 @@ model Users {
   name        String?
   password    String
   score       Int         @default(0)
+  createdAt   DateTime  @default(now())
   discounts   Discounts[]
 }
 
@@ -33,7 +34,9 @@ model Discounts {
   latitude      String
   longitude     String
   image         String
+  deadLine      DateTime
   createdAt     DateTime  @default(now())
   author        Users     @relation(fields: [authorId], references: [id])
   authorId      Int
 }
+
